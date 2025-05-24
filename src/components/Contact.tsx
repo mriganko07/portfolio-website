@@ -42,7 +42,7 @@ const Contact = () => {
               <div className="flex items-center space-x-3">
                 <Github className="text-blue-400" size={20} />
                 <a 
-                  href="https://github.com/mrigankoadhikary" 
+                  href="https://github.com/mriganko07" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200"
