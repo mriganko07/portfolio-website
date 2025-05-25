@@ -47,7 +47,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   className="text-gray-300 hover:text-blue-400 transition-colors duration-200"
                 >
-                  github.com/mrigankoadhikary
+                  github.com/mriganko07
                 </a>
               </div>
             </div>
