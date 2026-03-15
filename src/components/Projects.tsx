@@ -78,7 +78,7 @@ const Projects = () => {
                 
                 {project.institution && (
                   <div className="text-sm text-blue-300 mb-2">
-                    📚 {project.institution}
+                    <span className="font-semibold">Institution:</span> {project.institution}
                   </div>
                 )}
               </div>
