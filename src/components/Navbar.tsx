@@ -1,74 +1,97 @@
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+const navLinks = [
+  { num: '01', label: 'Who I Am', href: '#about' },
+  { num: '02', label: 'How I Build', href: '#process' },
+  { num: '03', label: 'Featured Work', href: '#work' },
+  { num: '04', label: 'Contact', href: '#contact' }
+];
 
-const Navbar = () => {
+export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Education", href: "#education" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    element?.scrollIntoView({ behavior: "smooth" });
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
     setIsOpen(false);
+    const target = document.querySelector(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-sm border-b border-gray-800 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="text-2xl font-bold text-blue-400">Mriganka Adhikary</div>
-          
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-gray-300 hover:text-blue-400 transition-colors duration-200"
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
+    <nav className={`fixed top-0 left-0 w-full z-50 text-foreground py-6 px-6 md:px-12 flex justify-between items-center ${!isOpen ? 'mix-blend-difference' : ''}`}>
+      <div className="text-xl font-display font-bold tracking-tighter relative z-50">
+        <a href="#" onClick={(e) => {
+          if(isOpen) setIsOpen(false);
+        }}>MRIGANKA<span className="text-accent">.</span></a>
+      </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-blue-400"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
+      <div className="hidden md:flex gap-8 text-sm font-medium relative z-50">
+        {navLinks.map((link) => (
+          <a 
+            key={link.num} 
+            href={link.href} 
+            onClick={(e) => handleScroll(e, link.href)}
+            className="group flex items-center gap-2 hover:text-accent transition-colors"
+          >
+            <span className="text-accent/60 text-xs">{link.num}</span>
+            <span className="tracking-tight">{link.label}</span>
+          </a>
+        ))}
+      </div>
 
-        {/* Mobile Menu */}
+      <button 
+        className="md:hidden flex flex-col gap-1.5 z-50 relative"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Toggle Menu"
+      >
+        <span className={`block w-6 h-0.5 bg-foreground transition-transform ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
+        <span className={`block w-6 h-0.5 bg-foreground transition-opacity ${isOpen ? 'opacity-0' : ''}`} />
+        <span className={`block w-6 h-0.5 bg-foreground transition-transform ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+      </button>
+
+      <AnimatePresence>
         {isOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-gray-800 rounded-lg mt-2">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="block w-full text-left px-3 py-2 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 w-full h-screen bg-background flex flex-col items-center justify-center -z-10 md:hidden"
+          >
+            <div className="flex flex-col gap-8 items-center">
+              {navLinks.map((link, i) => (
+                <motion.a 
+                  key={link.num} 
+                  href={link.href} 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  className="text-3xl font-display font-bold flex gap-4 items-center"
+                  onClick={(e) => handleScroll(e, link.href)}
                 >
-                  {item.name}
-                </button>
+                  <span className="text-accent text-lg">{link.num}</span>
+                  {link.label}
+                </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </nav>
-  );
-};
-
-export default Navbar;
+  )
+}

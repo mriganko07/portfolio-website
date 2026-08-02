@@ -1,71 +1,73 @@
+import { motion, useReducedMotion } from 'framer-motion';
+import { GradientMesh } from './GradientMesh';
+import { ArrowDown } from 'lucide-react';
 
-import { Github, Linkedin, Mail } from "lucide-react";
+export function Hero() {
+  const shouldReduceMotion = useReducedMotion();
 
-const Hero = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  };
+
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center px-4 pt-16">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="mb-8">
-          <div className="w-48 h-48 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-teal-500 p-1 mb-6">
-            <img 
-              src="/lovable-uploads/0f17509a-edcc-4813-851c-a61b2875686e.png"
-              alt="Mriganka Adhikary"
-              className="w-full h-full rounded-full object-cover"
-            />
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-            Mriganka Adhikary
-          </h1>
-          <div className="text-xl md:text-2xl text-blue-400 mb-2">
-            WEB DEVELOPER | PROGRAMMER
-          </div>
-          <p className="text-gray-300 text-lg">
-            Pursuing MCA form University of Mumbai || BCA Graduate from MAKAUT
+    <section id="hero" className="relative min-h-screen w-full flex flex-col items-center justify-center pt-20 px-6 md:px-12 overflow-hidden">
+      <GradientMesh />
+      
+      <motion.div 
+        className="z-10 w-full max-w-7xl mx-auto flex flex-col items-start"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <motion.div variants={itemVariants} className="overflow-hidden mb-6">
+          <p className="text-accent uppercase tracking-widest text-sm md:text-base font-semibold">
+            Full-Stack Developer & AI Innovator
           </p>
-        </div>
-        
-        <div className="flex justify-center space-x-6 mb-8">
-          <a
-            href="https://github.com/mriganko07"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-blue-400 transition-colors duration-200"
-          >
-            <Github size={28} />
-          </a>
-          <a
-            href="https://linkedin.com/in/mrigankoadhikary"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-400 hover:text-blue-400 transition-colors duration-200"
-          >
-            <Linkedin size={28} />
-          </a>
-          <a
-            href="mailto:mrigankaadhikary35@gmail.com"
-            className="text-gray-400 hover:text-blue-400 transition-colors duration-200"
-          >
-            <Mail size={28} />
-          </a>
-        </div>
+        </motion.div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button 
-            onClick={() => document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-200"
-          >
-            View My Work
-          </button>
-          <button 
-            onClick={() => document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })}
-            className="px-8 py-3 border border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition-colors duration-200"
-          >
-            Get In Touch
-          </button>
-        </div>
-      </div>
+        <motion.h1 
+          variants={itemVariants} 
+          className="text-6xl md:text-8xl lg:text-[10rem] font-display font-bold tracking-tighter leading-[0.85] uppercase mb-8"
+        >
+          Mriganka
+          <br />
+          <span className="text-foreground/40">Adhikary</span>
+        </motion.h1>
+
+        <motion.div variants={itemVariants} className="max-w-2xl">
+          <p className="text-lg md:text-xl text-foreground/70 font-light leading-relaxed">
+            Building modern web applications and AI-powered products. 
+            Transforming complex challenges into seamless, cinematic digital experiences.
+          </p>
+        </motion.div>
+      </motion.div>
+
+      <motion.div 
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-foreground/50 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+      >
+        <span className="text-xs uppercase tracking-widest rotate-90 mb-8">Scroll</span>
+        <motion.div 
+          animate={{ y: [0, 10, 0] }} 
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+        >
+          <ArrowDown className="w-5 h-5 text-accent" />
+        </motion.div>
+      </motion.div>
     </section>
-  );
-};
-
-export default Hero;
+  )
+}

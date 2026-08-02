@@ -1,27 +1,52 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { SmoothScroller } from './components/SmoothScroller';
+import { CustomCursor } from './components/CustomCursor';
+import { GrainOverlay } from './components/GrainOverlay';
+import { Navbar } from './components/Navbar';
+import { Hero } from './components/Hero';
+import { About } from './components/About';
+import { SkillsTicker } from './components/SkillsTicker';
+import { HowIBuild } from './components/HowIBuild';
+import { FeaturedWork } from './components/FeaturedWork';
+import { Experience } from './components/Experience';
+import { Stats } from './components/Stats';
+import { Contact } from './components/Contact';
+import { Footer } from './components/Footer';
+import './index.css';
 
-const queryClient = new QueryClient();
+function App() {
+  return (
+    <SmoothScroller>
+      <div className="min-h-screen bg-background text-foreground relative selection:bg-accent selection:text-background">
+        <CustomCursor />
+        <GrainOverlay />
+        
+        <Navbar />
+        
+        <main>
+          <Hero />
+          <SkillsTicker />
+          
+          <About />
+          <SkillsTicker />
+          
+          <HowIBuild />
+          <SkillsTicker />
+          
+          <FeaturedWork />
+          <SkillsTicker />
+          
+          <Experience />
+          <SkillsTicker />
+          
+          <Stats />
+          
+          <Contact />
+        </main>
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+        <Footer />
+      </div>
+    </SmoothScroller>
+  );
+}
 
 export default App;
